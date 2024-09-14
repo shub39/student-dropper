@@ -1,0 +1,8 @@
+studentdata.csv
+data/
+dataset/
+old_dataset/
+trainer/
+haarcascade_frontalface_default.xml
+.venv/
+__pycache__/
