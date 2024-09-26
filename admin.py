@@ -57,9 +57,9 @@ def main_menu():
         if option == 1:
             name = input("[INPUT] Enter Name: ")
             roll = int(input("[INPUT] Enter Roll no: "))
-            capture_fingerprint()
-            capture_face()
-            write_data()
+            if capture_fingerprint() is not None:
+                capture_face()
+                write_data()
         elif option == 2:
             train_dataset()
         elif option == 3:
@@ -86,11 +86,12 @@ def capture_fingerprint():
         positionNumber = result[0]
         
         if positionNumber >= 0:
-            print('\n[INFO] Already exists at #' + str(positionNumber + 1) + 'Try Again (y/n): ')
+            print('\n[INFO] Already exists at #' + str(positionNumber + 1) + ' Try Again (y/n): ')
             choice = input("[INPUT] Enter your Choice: \n")
             if choice == "y":
-                capture_fingerprint()
-            return None
+                return capture_fingerprint()
+            else:
+                return None
         
         else:
             print('[ACTION] REMOVE FINGER\n')
@@ -110,18 +111,25 @@ def capture_fingerprint():
                 print('[E] FINGERPRINTS DONT MATCH. TRY AGAIN? (y/n)\n')
                 choice = input("Enter your Choice: ")
                 if choice == "y":
-                    capture_fingerprint()
-                return None
+                    return capture_fingerprint()
+                else:
+                    return None
             
             f.convertImage(0x02)
             f.createTemplate()
             positionNumber = f.storeTemplate()
             print('[INFO] FINGERPRINT REGISTERED AT #' + str(positionNumber + 1) + '\n')
             index = str(positionNumber + 1)
+            return 1
 
     except Exception as e:
         print('[E] CAPTURE FINGERPRINT FAILED - ' + str(e) + '\n')
-        return None
+        print("[E] TRY AGAIN? (y/n)")
+        choice = input("[INPUT] Enter Your Choice: ")
+        if choice == "y":
+            return capture_fingerprint()
+        else:
+            return None
 
 def write_data():
     global roll, name, index
