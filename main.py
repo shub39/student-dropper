@@ -5,7 +5,7 @@ import os
 import time
 import csv
 from keypad import read_keypad, verify_passcode, roll_list
-# import display
+import display
 import evdev
 import sys
 from time import sleep
@@ -55,6 +55,7 @@ def subject_select():
     if not verify_passcode(): return
 
     global subject
+    display.draw(["SELECT SUBJECT"])
     print("\n[S] SELECT SUBJECT")
 
     keys = list(SUBJECTS.keys())
@@ -77,11 +78,13 @@ def subject_select():
         sleep(0.1)
 
     print(f"[S] SELECTED {subject}: {SUBJECTS[subject]}")
+    display.draw(["SELECTED SUBJECT", subject])
     sleep(1)
 
 # Copy attendance data to other class and change subject
 def copy_data():
     if not os.path.exists(f'data/{date}_{subject}.csv'):
+        display.draw(["SELECTED SUBJECT FILE IS ABSENT"])
         print("\n[CD] SELECTED SUBJECT FILE IS ABSENT!")
         return
 
@@ -98,11 +101,15 @@ def copy_data():
         writer.writerows(rows)
     
     print(f"[CD] COPIED DATA FROM {SUBJECTS[prev_subject]} to {SUBJECTS[subject]}")
+    display.draw(["COPIED DATA"])
+    time.sleep(1)
 
 # Delete a students data if they left
 def delete_data():
     if not os.path.exists(f'data/{date}_{subject}.csv'):
-        print("\n[DD] SELECTED SUBJECT FILE IS ABSENT!")
+        display.draw(["SELECTED STUDENT FILE IS ABSENT!"])
+        print("\n[DD] SELECTED STUDENT FILE IS ABSENT!")
+        time.sleep(1)
         return
 
     if not verify_passcode(): return
@@ -119,17 +126,17 @@ def delete_data():
         writer = csv.writer(file)
         writer.writerows(filtered_rows)
     
+    display.draw(["SELECTED ROWS REMOVED"])
     print("[DD] ALL SELECTED ROLLS REMOVED")
+    time.sleep(1)
 
 
 # Shows The number of fingerprints
 def show_data():
+    
     print('\n[SD] COUNT: ' + str(f.getTemplateCount()))
     print(f"[SD] SUBJECT: {subject}\n")
-    # display.draw([
-    # "COUNT: " + str(f.getTemplateCount()),
-    # "SUBJECT: " + subject
-    # ])
+    display.draw(["COUNT: " + str(f.getTemplateCount()), "SUBJECT: " + subject])
     sleep(2)
 
 def fingerprint_attendance():
@@ -137,8 +144,8 @@ def fingerprint_attendance():
     samay = time.strftime('%H:%M', time_tuple)
 
     try:
+        display.draw(["PLACE FINGER", subject, date])
         print('\n[FA] PLACE FINGER...')
-        time.sleep(1)
         print("[FA] SUBJECT: ", subject)
         print("[FA] TIME: ", samay)
         print("[FA] DATE: ", date)
@@ -150,16 +157,19 @@ def fingerprint_attendance():
         result = f.searchTemplate()
 
         if result[0] == -1:
+            display.draw(["NO MATCH", "TRY AGAIN"])
             print('[FA] NO MATCH TRY AGAIN' + '\n')
-            fingerprint_attendance()
-            return None
-
+            time.sleep(2)
+            return fingerprint_attendance()
         else:
+            display.draw(["FOUND FINGERPRINT"+ str(result[0] + 1)])
             print('[FA] FOUND FINGERPRINT ' + str(result[0] + 1) + '\n')
             result_queue.put(('fingerprint', result[0] + 1))
+            time.sleep(1)
             return result[0] + 1
 
     except Exception as e:
+        display.draw(["ERROR DETECTING", "FINGERPRINT"])
         print("[E] ERROR DETECTING FINGERPRINT", e)
 
 def face_attendance():
@@ -208,6 +218,7 @@ def write_data(roll = 0, index = 0):
             csvout.writerow(['Roll', 'Name', 'Time'])
 
     if index != 0:
+        display.draw(["FOUND FINGERPRINT"])
         print('[WD] FOUND FINGERPRINT AT ' + str(index) + '\n')
         with open('studentdata.csv', 'r') as file1:
             with open(f'data/{date}_{subject}.csv', 'r') as file2:
@@ -224,16 +235,17 @@ def write_data(roll = 0, index = 0):
                         print('[WD] Department: ', DEPT)
                         print('[WD] Sem: ', SEM)
                         print('[WD] Time: ', samay)
-
-        # display.draw([
-        # "REGISTERING...",
-        # "NAME: " + name,
-        # "ROLL: " + roll,
-        # "DEPT: " + dept,
-        # "SEM: " + year    
-        # ])        
+                    
+        time.sleep(1)
+        display.draw([
+        "REGISTERING...",
+        "NAME: " + name,
+        "ROLL: " + roll
+        ])
+        time.sleep(2)       
 
     else:
+        display.draw(["FOUND FACE"])
         print(f"[WD] FOUND FACE AT {roll}\n")
         with open('studentdata.csv', 'r') as file1:
             with open(f'data/{date}_{subject}.csv', 'r') as file2:
@@ -250,6 +262,14 @@ def write_data(roll = 0, index = 0):
                         print('[WD] Department: ', DEPT)
                         print('[WD] Sem: ', SEM)
                         print('[WD] Time: ', samay)
+
+        time.sleep(1)
+        display.draw([
+        "REGISTERING...",
+        "NAME: " + name,
+        "ROLL: " + roll
+        ])
+        time.sleep(2)  
 
     with open(f'data/{date}_{subject}.csv', 'r') as file:
         reader = csv.reader(file)
@@ -305,12 +325,12 @@ def main_menu():
     print("D - DELETE DATA")
 
     while True:
-        # display.draw([
-        # "1 - ATTENDANCE",
-        # "2 - SELECT SUBJECT",
-        # "3 - SHOW DATA",
-        # "4 - SHUT DOWN"
-        # ])
+        display.draw([
+        "1 - ATTENDANCE",
+        "2 - SELECT SUBJECT",
+        "3 - SHOW DATA",
+        "4 - SHUT DOWN"
+        ])
 
         if read_keypad() == "1":
             attendance()
