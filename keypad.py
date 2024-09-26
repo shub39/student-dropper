@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 from constants import PASSCODE
 import time
+import display
 
 # Keyboard variables
 
@@ -48,8 +49,9 @@ def read_keypad():
     return output 
 
 def enter_passcode():
-    time.sleep(0.3)
+    time.sleep(0.2)
     input_code = ""
+    display.draw(["ENTER PASSCODE"])
     print("[VERIFY] Enter your 4-digit passcode:")
     
     while len(input_code) < 4:
@@ -59,11 +61,14 @@ def enter_passcode():
             time.sleep(0.3)
 
         if key:
+            
             print(f"[VERIFY] Key pressed: {key}")
             if key.isdigit():
                 input_code += key
+                display.draw(["ENTER PASSCODE", f"{input_code}"])
                 print(f"[VERIFY] Current input: {input_code}")
             elif key == "*":
+                display.draw(["INPUT  RESET"])
                 input_code = ""
                 print("[VERIFY] Input reset.")
     
@@ -71,9 +76,10 @@ def enter_passcode():
 
 def enter_roll():
     number = ""
+    display.draw(["ENTER ROLL"])
+    print("[DD] ENTER ROLL:")
     
     while len(number) < 2:
-        print("[DD] ENTER NUMBER:")
         key = None
         while not key:
             key = read_keypad()
@@ -82,9 +88,11 @@ def enter_roll():
         if key:
             if key.isdigit():
                 number += key
+                display.draw(["ENTER ROLL", f"{number}"])
                 print(f"[DD] CURRENT NUMBER: {number}")
             elif key == "*":
                 number = ""
+                display.draw(["NUMBER RESET"])
                 print("[DD] NUMBER RESET.")
     
     return number
@@ -98,11 +106,11 @@ def roll_list():
         print(f"\n[DD] ROLL ADDED: {two_digit_number}")
         
         while True:
-            print("[DD] Press 'A' to add another number, 'B' to finish.")
+            display.draw(["PRESS 'A' TO ADD ROLL","PRESS 'B' TO FINISH", str(numbers_list)])
+            print("[DD] Press 'A' to add another roll, 'B' to finish.")
             choice = None
             while not choice:
                 choice = read_keypad()
-                time.sleep(0.1)
 
             if choice == "A":
                 print("[DD] Adding another roll.")
@@ -116,8 +124,13 @@ def roll_list():
 def verify_passcode():
     entered_code = enter_passcode()
     if entered_code == PASSCODE:
+        display.draw(["ACCESS GRANTED"])
         print("[VERIFY] ACCESS GRANTED.")
+        time.sleep(1)
         return True
     else:
+        display.draw(["ACCESS DENIED"])
         print("[VERIFY] ACCESS DENIED.")
+        time.sleep(1)
         return False
+
