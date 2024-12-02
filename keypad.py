@@ -133,4 +133,3 @@ def verify_passcode():
         print("[VERIFY] ACCESS DENIED.")
         time.sleep(1)
         return False
-
