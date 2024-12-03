@@ -1,17 +1,17 @@
 # Script to enroll data and train face dataset
 # Run this in GUI through VNC or HDMI
 
-import cv2
-import numpy as np
+import csv
 import os
 import shutil
-import csv
-from picamera2 import Picamera2
-import RPi.GPIO as GPIO
-import evdev
 import sys
 from time import sleep
+
+import cv2
+import numpy as np
+from picamera2 import Picamera2
 from pyfingerprint.pyfingerprint import PyFingerprint
+
 from constants import DEPT, SEM
 
 # Constants

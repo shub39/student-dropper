@@ -1,7 +1,12 @@
 #!/usr/bin/bash
 
 # install uv (pip package manager)
-curl -LsSf https://astral.sh/uv/install.sh | sh
+if ! command -v uv &> /dev/null; then
+    echo "'uv' is not installed. Installing..."
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+else
+    echo "'uv' is already installed."
+fi
 
 # setup venv
 uv venv
