@@ -15,7 +15,11 @@ source .venv/bin/activate
 # install apt dependencies
 sudo apt update
 sudo apt upgrade
+sudo apt install pip python3-opencv python3-numpy
 sudo apt install libkms++-dev libfmt-dev libdrm-dev # might require more...
+
+# install some pip packages globally (required for admin script)
+pip install picamera2 pyfingerprint --break-system-packages
 
 # install pip dependencies
 uv pip install -r requirements.txt
