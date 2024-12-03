@@ -14,7 +14,7 @@ import numpy as np
 from picamera2 import Picamera2
 from pyfingerprint.pyfingerprint import PyFingerprint
 
-from ..constants import DEPT, SEM
+from student_dropper.constants import DEPT, SEM
 
 # Constants
 COUNT_LIMIT = 30
