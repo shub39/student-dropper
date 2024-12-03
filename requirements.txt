@@ -27,7 +27,6 @@ pyusb==1.2.1
 rclone==0.4.4
 rpi-gpio==0.7.1
 rpi-kms==0.1a1
-rpi-libcamera==0.1a6
 simplejpeg==1.7.6
 sysv-ipc==1.1.0
 tqdm==4.67.0
