@@ -44,9 +44,6 @@ except Exception as e:
         sys.exit(1)
 
 def main_menu():
-    """
-    Main Menu
-    """
     global NAME, ROLL
     while True:
         print("\n--ADMIN SCRIPT --")
@@ -79,10 +76,6 @@ def main_menu():
             print("\n[E] Invalid choice. Please enter a valid option.\n")
                   
 def capture_fingerprint():
-    """
-    Captures fingerprints
-    :return:
-    """
     global ROLL, NAME, INDEX
     print('\n[INFO] FINGERPRINTS CURRENTLY STORED: ' + str(f.getTemplateCount()))
     
