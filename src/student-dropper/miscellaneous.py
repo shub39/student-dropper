@@ -2,7 +2,6 @@ import os
 import csv
 import time
 import display
-from keypad import read_keypad
 from constants import SUBJECTS
 from subject_select import SubjectSelect
 from pyfingerprint.pyfingerprint import PyFingerprint

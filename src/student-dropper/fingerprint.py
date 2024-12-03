@@ -32,7 +32,7 @@ class FingerprintAttendance:
                 time.sleep(2)
                 return self.fingerprint_attendance(result_queue)
             else:
-                display.draw(["FOUND FINGERPRINT "+ str(result[0] + 1)])
+                display.draw(["FOUND FINGERPRINT " + str(result[0] + 1)])
                 print('[FA] FOUND FINGERPRINT ' + str(result[0] + 1) + '\n')
                 result_queue.put(('fingerprint', result[0] + 1))
                 time.sleep(1)

@@ -1,22 +1,7 @@
-import os
-import time
-import csv
-from keypad import read_keypad, verify_passcode, roll_list
+from keypad import read_keypad
 import display
-import evdev
-import sys
-from time import sleep
-from pyfingerprint.pyfingerprint import PyFingerprint
-import threading
 import subprocess
-import queue
-import cv2
-import numpy as np
-from picamera2 import Picamera2
-from constants import STUDENT_STRENGTH, SUBJECTS, DEPT, SEM
-from miscellaneous import show_data, copy_data, delete_data
-import attendance
-import subject_select
+
 
 def main_menu():
     print("1 - STUDENT ATTENDANCE")

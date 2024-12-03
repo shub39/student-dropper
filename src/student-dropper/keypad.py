@@ -106,7 +106,7 @@ def roll_list():
         print(f"\n[DD] ROLL ADDED: {two_digit_number}")
         
         while True:
-            display.draw(["PRESS 'A' TO ADD ROLL","PRESS 'B' TO FINISH", str(numbers_list)])
+            display.draw(["PRESS 'A' TO ADD ROLL", "PRESS 'B' TO FINISH", str(numbers_list)])
             print("[DD] Press 'A' to add another roll, 'B' to finish.")
             choice = None
             while not choice:

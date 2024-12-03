@@ -6,14 +6,12 @@ import time
 import csv
 from keypad import read_keypad, verify_passcode, roll_list
 import display
-import evdev
 import sys
 from time import sleep
 from pyfingerprint.pyfingerprint import PyFingerprint
 import threading
 import queue
 import cv2
-import numpy as np
 from picamera2 import Picamera2
 from constants import STUDENT_STRENGTH, SUBJECTS, DEPT, SEM
 
@@ -162,7 +160,7 @@ def fingerprint_attendance():
             time.sleep(2)
             return fingerprint_attendance()
         else:
-            display.draw(["FOUND FINGERPRINT"+ str(result[0] + 1)])
+            display.draw(["FOUND FINGERPRINT" + str(result[0] + 1)])
             print('[FA] FOUND FINGERPRINT ' + str(result[0] + 1) + '\n')
             result_queue.put(('fingerprint', result[0] + 1))
             time.sleep(1)
