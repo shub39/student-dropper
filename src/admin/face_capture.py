@@ -81,7 +81,7 @@ class FaceCaptureTrainer:
     def train_dataset(self):
         """Public function that trains the face model"""
         logging.info("Training face model")
-        faces, ids = self._getImagesAndLabels(PATH)
+        faces, ids = self._getImagesAndLabels(self.dataset_path)
         self._trainRecognizer(faces, ids)
         faces_trained = len(set(ids))
         logging.info("Training complete. Faces trained: %s", faces_trained)
