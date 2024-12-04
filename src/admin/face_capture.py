@@ -24,22 +24,15 @@ class FaceCaptureTrainer:
         self.FACE_DETECTOR = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
         self.RECOGNIZER = cv2.face.LBPHFaceRecognizer_create()
         self.cam = Picamera2()
-
-    def initialize_camera(self):
-        """Initialize the camera with specific settings."""
-        try:
-            self.cam.preview_configuration.main.size = (640, 360)
-            self.cam.preview_configuration.main.format = "RGB888"
-            self.cam.preview_configuration.controls.FrameRate = 24
-            self.cam.preview_configuration.align()
-            self.cam.configure("preview")
-            self.cam.start()
-        except Exception as e:
-            logging.error("Can't start camera %s", e)
+        self.cam.preview_configuration.main.size = (640, 360)
+        self.cam.preview_configuration.main.format = "RGB888"
+        self.cam.preview_configuration.controls.FrameRate = 24
+        self.cam.preview_configuration.align()
+        self.cam.configure("preview")
 
     def capture_faces(self, roll):
         """Capture faces and save them to the dataset."""
-        self.initialize_camera()
+        self.cam.start()
 
         count = 0
         os.makedirs(self.dataset_path, exist_ok=True)
@@ -79,13 +72,9 @@ class FaceCaptureTrainer:
             logging.error("Error during face capture: %s", e)
 
         finally:
-            self.cleanup()
-
-    def cleanup(self):
-        """Clean up resources after capturing faces."""
-        logging.info("Exiting Program and cleaning up resources.")
-        cv2.destroyAllWindows()
-        if self.cam: self.cam.close()
+            logging.info("Exiting Program and cleaning up resources.")
+            cv2.destroyAllWindows()
+            if self.cam: self.cam.close()
 
     def train_dataset(self):
         """Public function that trains the face model"""
