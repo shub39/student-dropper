@@ -80,7 +80,7 @@ class FaceCaptureTrainer:
 
     def cleanup(self):
         """Clean up resources after capturing faces."""
-        print("\n[INFO] Exiting Program and cleaning up resources.")
+        logging.info("Exiting Program and cleaning up resources.")
         cv2.destroyAllWindows()
         self.cam.close()
 
