@@ -12,6 +12,7 @@ logging.basicConfig(
 
 class FaceCaptureTrainer:
     def __init__(self, count_limit=30, dataset_path="dataset", old_dataset_path="old_dataset"):
+        self.cam = None
         self.COUNT_LIMIT = count_limit
         self.dataset_path = dataset_path
         self.old_dataset_path = old_dataset_path
@@ -23,7 +24,6 @@ class FaceCaptureTrainer:
         self.WEIGHT = 3
         self.FACE_DETECTOR = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
         self.RECOGNIZER = cv2.face.LBPHFaceRecognizer_create()
-        self.cam = Picamera2()
 
     def capture_faces(self, roll):
         """Capture faces and save them to the dataset."""
