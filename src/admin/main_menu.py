@@ -13,10 +13,10 @@ from face_capture import FaceCaptureTrainer
 
 
 MENU_OPTIONS = {
-    1: capture_info,
-    2: train_dataset,
-    3: exit_program,
-    4: clear_database
+    1: "Capture Info",
+    2: "Train dataset",
+    3: "Exit program",
+    4: "Clear database"
 }
 
 def main_menu():
@@ -25,8 +25,8 @@ def main_menu():
 
     while True:
         print("\n--ADMIN SCRIPT --")
-        for key, func in MENU_OPTIONS.items():
-            print(f"{key}. {func.__name__.replace('_', ' ').capitalize()}")
+        for key, value in MENU_OPTIONS.items():
+            print(f"{key}. {value}")
 
         option = int(input("Enter your choice: "))
 
