@@ -34,7 +34,7 @@ def main_menu():
             name = input("Enter Name: ")
             roll = int(input("Enter Roll no: "))
             if fingerprint.capture_fingerprint():
-                face.capture_face(roll)
+                face.capture_faces(roll)
                 write_data(fingerprint.index, roll, name)
 
         elif option == 2:
