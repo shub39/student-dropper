@@ -49,7 +49,7 @@ def main_menu():
             roll = int(input("Enter Roll no: "))
             if fingerprint.capture_fingerprint():
                 face.capture_faces(roll + 100) # for easier detection
-            write_teacher_data(fingerprint.index, roll + 100, name, subject)
+                write_teacher_data(fingerprint.index, roll + 100, name, subject)
 
 
         elif option == 3:
