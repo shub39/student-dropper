@@ -2,6 +2,12 @@ import logging
 from pyfingerprint.pyfingerprint import PyFingerprint
 import sys
 
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+)
+
 class FingerprintSensor:
     def __init__(self):
         """Initialize the fingerprint sensor."""

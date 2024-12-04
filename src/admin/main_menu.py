@@ -11,6 +11,11 @@ import shutil
 from fingerprint import FingerprintSensor
 from face_capture import FaceCaptureTrainer
 
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+)
 
 MENU_OPTIONS = {
     1: "Capture Info",

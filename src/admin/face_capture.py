@@ -4,6 +4,12 @@ import cv2
 import numpy as np
 from picamera2 import Picamera2
 
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+)
+
 class FaceCaptureTrainer:
     def __init__(self, count_limit=30, dataset_path="dataset", old_dataset_path="old_dataset"):
         self.COUNT_LIMIT = count_limit
