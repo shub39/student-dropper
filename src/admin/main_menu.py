@@ -34,16 +34,16 @@ def main_menu():
         for key, value in MENU_OPTIONS.items():
             print(f"{key}. {value}")
 
-        option = int(input("Enter your choice: "))
+        option = input("Enter your choice: ")
 
-        if option == 1:
+        if option == "1":
             name = input("Enter Name: ")
             roll = int(input("Enter Roll no: "))
             if fingerprint.capture_fingerprint():
                 face.capture_faces(roll)
                 write_student_data(fingerprint.index, roll, name)
 
-        if option == 2:
+        if option == "2":
             name = input("Enter name: ")
             subject = input("Enter subject: ")
             roll = int(input("Enter Roll no: "))
@@ -52,14 +52,14 @@ def main_menu():
                 write_teacher_data(fingerprint.index, roll + 100, name, subject)
 
 
-        elif option == 3:
+        elif option == "3":
             face.train_dataset()
 
-        elif option == 4:
+        elif option == "4":
             print("Exiting the program. Goodbye!")
             break
 
-        elif option == 5:
+        elif option == "5":
             fingerprint.clear_fingerprints()
             clear_database()
 
