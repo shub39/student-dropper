@@ -45,44 +45,47 @@ class FaceCaptureTrainer:
         os.makedirs(self.dataset_path, exist_ok=True)
         os.makedirs(self.old_dataset_path, exist_ok=True)
 
-        while True:
-            frame = self.cam.capture_array()
-            cv2.putText(frame, f'Count: {count}', self.POS, self.FONT, self.HEIGHT, self.TEXT_COLOR, self.WEIGHT)
-            frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        try:
+            while True:
+                frame = self.cam.capture_array()
+                cv2.putText(frame, f'Count: {count}', self.POS, self.FONT, self.HEIGHT, self.TEXT_COLOR, self.WEIGHT)
+                frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-            faces = self.FACE_DETECTOR.detectMultiScale(
-                frame_gray,
-                scaleFactor=1.1,
-                minNeighbors=5,
-                minSize=(30, 30)
-            )
+                faces = self.FACE_DETECTOR.detectMultiScale(
+                    frame_gray,
+                    scaleFactor=1.1,
+                    minNeighbors=5,
+                    minSize=(30, 30)
+                )
 
-            for (x, y, w, h) in faces:
-                cv2.rectangle(frame, (x, y), (x + w, y + h), self.BOX_COLOR, 3)
-                count += 1
+                for (x, y, w, h) in faces:
+                    cv2.rectangle(frame, (x, y), (x + w, y + h), self.BOX_COLOR, 3)
+                    count += 1
 
-                file_path = os.path.join(self.dataset_path, f"{roll}.{count}.jpg")
-                if os.path.exists(file_path):
-                    old_file_path = file_path.replace(self.dataset_path, self.old_dataset_path)
-                    os.rename(file_path, old_file_path)
+                    file_path = os.path.join(self.dataset_path, f"{roll}.{count}.jpg")
+                    if os.path.exists(file_path):
+                        old_file_path = file_path.replace(self.dataset_path, self.old_dataset_path)
+                        os.rename(file_path, old_file_path)
 
-                cv2.imwrite(file_path, frame_gray[y:y + h, x:x + w])
+                    cv2.imwrite(file_path, frame_gray[y:y + h, x:x + w])
 
-            cv2.imshow('FaceCapture', frame)
-            key = cv2.waitKey(100) & 0xFF
+                cv2.imshow('FaceCapture', frame)
+                key = cv2.waitKey(100) & 0xFF
 
-            if key in [27, 113]:  # Exit on 'ESC' or 'q'
-                break
-            elif count >= self.COUNT_LIMIT:
-                break
+                if key in [27, 113] or count >= self.COUNT_LIMIT:
+                    break
 
-        self.cleanup()
+        except Exception as e:
+            logging.error("Error during face capture: %s", e)
+
+        finally:
+            self.cleanup()
 
     def cleanup(self):
         """Clean up resources after capturing faces."""
         logging.info("Exiting Program and cleaning up resources.")
         cv2.destroyAllWindows()
-        self.cam.close()
+        if self.cam: self.cam.close()
 
     def train_dataset(self):
         """Public function that trains the face model"""
