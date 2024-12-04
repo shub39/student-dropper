@@ -18,10 +18,11 @@ logging.basicConfig(
 )
 
 MENU_OPTIONS = {
-    1: "Capture Info",
-    2: "Train dataset",
-    3: "Exit program",
-    4: "Clear database"
+    1: "Capture Student Info",
+    2: "Capture Teacher Info",
+    3: "Train dataset",
+    4: "Exit program",
+    5: "Clear database"
 }
 
 def main_menu():
@@ -40,31 +41,46 @@ def main_menu():
             roll = int(input("Enter Roll no: "))
             if fingerprint.capture_fingerprint():
                 face.capture_faces(roll)
-                write_data(fingerprint.index, roll, name)
+                write_student_data(fingerprint.index, roll, name)
 
-        elif option == 2:
-            face.train_dataset()
+        if option == 2:
+            name = input("Enter name: ")
+            subject = input("Enter subject: ")
+            roll = int(input("Enter Roll no: "))
+            if fingerprint.capture_fingerprint():
+                face.capture_faces(roll + 100) # for easier detection
+            write_teacher_data(fingerprint.index, roll + 100, name, subject)
+
 
         elif option == 3:
+            face.train_dataset()
+
+        elif option == 4:
             print("Exiting the program. Goodbye!")
             break
 
-        elif option == 4:
+        elif option == 5:
             fingerprint.clear_fingerprints()
             clear_database()
 
         else:
             print("Invalid choice. Please enter a valid option.")
                   
-def write_data(index, roll, name):
+def write_student_data(index, roll, name):
     with open("studentdata.csv", "a") as file:
         writer = csv.writer(file)
         writer.writerow([index, roll, name])
     logging.info("Data written")
 
+def write_teacher_data(index, roll, name, subject):
+    with open("teacherdata.csv", "a") as file:
+        writer = csv.writer(file)
+        writer.writerow([index, roll, name, subject])
+    logging.info("Data writter")
+
 def clear_database():
-    file1 = open('studentdata.csv','w')
-    file1.close()
+    open("studentdata.csv","w").close()
+    open("teacherdata.csv", "w").close()
     try:
         shutil.rmtree("old_dataset")
     except:
