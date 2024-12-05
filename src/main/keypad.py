@@ -134,6 +134,7 @@ def roll_list():
 
 def verify_passcode():
     """Verifies passcode, do I have to document everything?"""
+    sleep(0.5)
     entered_code = enter_passcode()
 
     if entered_code == PASSCODE:
