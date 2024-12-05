@@ -16,7 +16,7 @@ def draw(string_list, sleep_seconds = 0):
     image = Image.new('1', (128, 32))
     drawer = ImageDraw.Draw(image)
     for item in string_list:
-        drawer.text((0, index), item.capitalize(), fill="white")
+        drawer.text((0, index), str(item).upper(), fill="white")
         index += 10
 
     display.image(image)
