@@ -14,6 +14,9 @@ class Student:
         self.roll = roll,
         self.name = name
 
+    def __str__(self):
+        return f"Student(index={self.index}, roll={self.roll}, name={self.name})"
+
 class Teacher:
     """Class to hold teacher data"""
     def __init__(self, index, roll, name, subject):
@@ -21,6 +24,9 @@ class Teacher:
         self.roll = roll
         self.name = name
         self.subject = subject
+
+    def __str__(self):
+        return f"Teacher(index={self.index}, roll={self.roll}, name={self.name}, subject={self.subject})"
 
 def load_students():
     """Loads students from studentdata.csv"""
@@ -36,7 +42,7 @@ def load_students():
                     roll=str(line[1]),
                     name=str(line[2])
                 )
-                students += student
+                students.append(student)
                 logging.info("Added Student: " + student.__str__())
     except Exception as e:
         logging.error("Cant load students.", e)
@@ -59,7 +65,7 @@ def load_teachers():
                     name = str(line[2]),
                     subject = str(line[3])
                 )
-                teachers += teacher
+                teachers.append(teacher)
                 logging.info("Added teacher: " + teacher.__str__())
     except Exception as e:
         logging.error("Cant load teachers: ", e)
