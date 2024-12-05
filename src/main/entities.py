@@ -38,9 +38,9 @@ def load_students():
 
             for line in reader:
                 student = Student(
-                    index=str(line[0]),
-                    roll=str(line[1]),
-                    name=str(line[2])
+                    index = str(line[0]),
+                    roll = str(line[1]),
+                    name = str(line[2])
                 )
                 students.append(student)
                 logging.info("Added Student: " + student.__str__())
