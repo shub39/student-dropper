@@ -69,6 +69,9 @@ def main_menu():
 
                 result_type, result_value = result_queue.get()
 
+                thread1.join()
+                thread2.join()
+
                 if result_queue.empty():
                     logging.info("timeout")
                     draw(["timeout"], 1)
