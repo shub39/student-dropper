@@ -35,4 +35,3 @@ class FaceAttendance:
                     print("\n[FAA] Exiting Program and cleaning up stuff")
                     result_queue.put(('face', id))
                     return id
-
