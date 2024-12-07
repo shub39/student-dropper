@@ -29,9 +29,9 @@ class FaceAttendance:
             )
 
             for (x, y, w, h) in faces:
-                id, confidence = self.recognizer.predict(frame_gray[y:y + h, x:x + w])
+                face_id, confidence = self.recognizer.predict(frame_gray[y:y + h, x:x + w])
 
                 if confidence > 25:
                     print("\n[FAA] Exiting Program and cleaning up stuff")
-                    result_queue.put(('face', id))
-                    return id
+                    result_queue.put(('face', face_id))
+                    return face_id

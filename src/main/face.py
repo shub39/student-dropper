@@ -28,7 +28,10 @@ class FaceAttendance:
             logging.info("failed to initialize face class %s", e)
 
     def face_attendance(self, result_queue: queue.Queue):
-        while True:
+        start_time = time.time()
+
+        while time.time() - start_time < 5:
+            logging.info("starting face detection")
             frame = self.cam.capture_array()
             frame_gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
 
@@ -40,9 +43,12 @@ class FaceAttendance:
             )
 
             for (x, y, w, h) in faces:
-                id, confidence = self.recognizer.predict(frame_gray[y:y + h, x:x + w])
+                face_id, confidence = self.recognizer.predict(frame_gray[y:y + h, x:x + w])
 
                 if confidence > 25:
                     logging.info("exiting face detection")
-                    result_queue.put("face", id)
-                    return id
+                    result_queue.put(("face", face_id))
+                    return face_id
+
+        logging.info("face detection timed out")
+        return None

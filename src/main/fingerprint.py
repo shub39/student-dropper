@@ -25,14 +25,18 @@ class FingerPrintAttendance:
                 sys.exit(1)
 
     def fingerprint_attendance(self, result_queue: queue.Queue):
-        time_tuple = time.localtime()
-        formatted_time = time.strftime("%H:%M", time_tuple)
-
         try:
-            draw(["place finger", f"time: {formatted_time}"])
             logging.info("place finger on sensor")
 
-            while (self.f.readImage() == False): pass
+            start_time = time.time()
+
+            while self.f.readImage() == False:
+                if time.time() - start_time < 5:
+                    pass
+                else:
+                    logging.info("fingerprint detection timed out")
+                    return None
+
 
             self.f.convertImage()
             result = self.f.searchImage()
@@ -40,7 +44,7 @@ class FingerPrintAttendance:
             if result[0] == -1:
                 draw(["no match", "try again"], 2)
                 logging.info("no match found try again.")
-                return self.fingerprint_attendance(result_queue)
+                return None
             else:
                 draw(["found fingerprint " + str(result[0])], 1)
                 logging.info("found fingerprint " + str(result[0]))
@@ -50,3 +54,4 @@ class FingerPrintAttendance:
         except Exception as e:
             draw(["error detecting", "fingerprint"])
             logging.info("error detecting fingerprint %s", e)
+            return None

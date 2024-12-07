@@ -61,13 +61,25 @@ def main_menu():
 
         if read_keypad() == "2":
             logging.info("Starting teacher attendance")
-            verify_passcode()
-            thread1.start()
-            thread2.start()
 
-            result_type, result_value = result_queue.get()
+            if verify_passcode():
+                draw(["detecting fingerprint", "or face"])
+                thread1.start()
+                thread2.start()
 
-            logging.info(f"first to finish: {result_type} with value: {result_value}")
+                result_type, result_value = result_queue.get()
+
+                if result_queue.empty():
+                    logging.info("timeout")
+                    draw(["timeout"], 1)
+                    continue
+                else:
+                    logging.info(f"first to finish: {result_type} with value: {result_value}")
+
+            else:
+                continue
+
+
 
 
 if __name__ == '__main__':
