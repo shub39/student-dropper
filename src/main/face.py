@@ -45,6 +45,10 @@ class FaceAttendance:
             for (x, y, w, h) in faces:
                 face_id, confidence = self.recognizer.predict(frame_gray[y:y + h, x:x + w])
 
+                if time.time() - start_time >= 5:
+                    logging.info("face detection timed out")
+                    return None
+
                 if confidence > 25:
                     logging.info("exiting face detection")
                     result_queue.put(("face", face_id))

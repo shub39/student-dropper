@@ -79,8 +79,5 @@ def main_menu():
             else:
                 continue
 
-
-
-
 if __name__ == '__main__':
     main_menu()
