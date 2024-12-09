@@ -107,7 +107,6 @@ def teacher_attendance(
         finally:
             thread1.join(timeout=1)
             thread2.join(timeout=1)
-            return None
 
 if __name__ == '__main__':
     main_menu()
