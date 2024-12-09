@@ -53,6 +53,7 @@ def main_menu():
 
         if read_keypad() == "2":
             current_teacher = teacher_attendance(fingerprint_class, face_class, teachers)
+            logging.info(str(current_teacher))
 
 def teacher_attendance(
         fingerprint_class: FingerPrintAttendance,
