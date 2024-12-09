@@ -48,7 +48,7 @@ class FaceAttendance:
 
                 if confidence > 25:
                     result_queue.put(("face", face_id))
-                    return face_id
+                    return int(face_id)
 
         logging.info("face detection timeout")
         return None

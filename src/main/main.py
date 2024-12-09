@@ -25,7 +25,7 @@ def main_menu():
     logging.info("Starting program")
 
     # global variables
-    currentSubjectTeacher = None
+    current_teacher = None
 
     fingerprint_class = FingerPrintAttendance()
     face_class = FaceAttendance()
@@ -45,18 +45,20 @@ def main_menu():
         draw(main_menu_items)
 
         if read_keypad() == "1":
-            logging.info("Starting student attendance")
-            if currentSubjectTeacher is None:
+            if current_teacher is None:
                 logging.info("no subject selected")
                 draw(["no subject", "selected"], 1)
+            else:
+                logging.info("Starting student attendance")
 
         if read_keypad() == "2":
-            teacher_attendance(fingerprint_class, face_class, teachers)
+            teacher_attendance(fingerprint_class, face_class, teachers, current_teacher)
 
 def teacher_attendance(
         fingerprint_class: FingerPrintAttendance,
         face_class: FaceAttendance,
-        teachers
+        teachers,
+        current_teacher
 ):
     """Teacher attendance taker"""
     logging.info("Starting teacher attendance")
@@ -81,19 +83,25 @@ def teacher_attendance(
             logging.info(f"first to finish: {result_type} with value: {result_value}")
 
             if result_type == "fingerprint":
-                possible_indexes = []
                 for teacher in teachers:
-                    possible_indexes.append(teacher.index)
+                    if str(result_value) == teacher.index:
+                        draw(["subject", str(teacher.subject)], 1)
+                        current_teacher = teacher
 
-                if str(result_value) not in possible_indexes:
-                    draw(["invalid", "fingerprint"], 1)
+                        thread1.join(timeout=1)
+                        thread2.join(timeout=1)
+                        return
+                draw(["invalid", "fingerprint"], 1)
             else:
-                possible_rolls = []
                 for teacher in teachers:
-                    possible_rolls.append(teacher.roll)
+                    if str(result_value - 100) == teacher.roll:
+                        draw(["subject", str(teacher.subject)], 1)
+                        current_teacher = teacher
 
-                if str(result_value + 100) not in possible_rolls:
-                    draw(["invalid", "faces"])
+                        thread1.join(timeout=1)
+                        thread2.join(timeout=1)
+                        return
+                draw(["invalid", "fingerprint"], 1)
 
         except queue.Empty:
             logging.info("timeout")
