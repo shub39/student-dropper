@@ -29,7 +29,6 @@ def main_menu():
 
     fingerprint_class = FingerPrintAttendance()
     face_class = FaceAttendance()
-    result_queue = queue.Queue()
 
     # Try to load all entities into classes and exit if empty
     students = load_students()
@@ -65,6 +64,8 @@ def teacher_attendance(fingerprint_class: FingerPrintAttendance, face_class: Fac
 
     thread1 = threading.Thread(target=face_thread)
     thread2 = threading.Thread(target=fingerprint_thread)
+
+    result_queue = queue.Queue()
 
     if verify_passcode():
         draw(["detecting fingerprint", "or face"])
