@@ -57,7 +57,6 @@ def main_menu():
                     draw([student.name, student.roll], 1)
                     write_data(student, current_teacher)
 
-
         if read_keypad() == "2":
             current_teacher = teacher_attendance(fingerprint_class, face_class, teachers)
             if current_teacher is not None:
