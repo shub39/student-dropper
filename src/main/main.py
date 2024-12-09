@@ -31,14 +31,6 @@ def main_menu():
     face_class = FaceAttendance()
     result_queue = queue.Queue()
 
-    def fingerprint_thread():
-        fingerprint_class.fingerprint_attendance(result_queue)
-    def face_thread():
-        face_class.face_attendance(result_queue)
-
-    thread1 = threading.Thread(target=face_thread)
-    thread2 = threading.Thread(target=fingerprint_thread)
-
     # Try to load all entities into classes and exit if empty
     students = load_students()
     teachers = load_teachers()
@@ -60,25 +52,34 @@ def main_menu():
                 draw(["no subject", "selected"], 1)
 
         if read_keypad() == "2":
-            logging.info("Starting teacher attendance")
+            teacher_attendance(fingerprint_class, face_class)
 
-            if verify_passcode():
-                draw(["detecting fingerprint", "or face"])
-                thread1.start()
-                thread2.start()
+def teacher_attendance(fingerprint_class: FingerPrintAttendance, face_class: FaceAttendance):
+    """Teacher attendance taker"""
+    logging.info("Starting teacher attendance")
 
-                try:
-                    result_type, result_value = result_queue.get(timeout=5)
-                    logging.info(f"first to finish: {result_type} with value: {result_value}")
-                except queue.Empty:
-                    logging.info("timeout")
-                    draw(["timeout"], 1)
-                finally:
-                    thread1.join(timeout=1)
-                    thread2.join(timeout=1)
+    def fingerprint_thread():
+        fingerprint_class.fingerprint_attendance(result_queue)
+    def face_thread():
+        face_class.face_attendance(result_queue)
 
-            else:
-                continue
+    thread1 = threading.Thread(target=face_thread)
+    thread2 = threading.Thread(target=fingerprint_thread)
+
+    if verify_passcode():
+        draw(["detecting fingerprint", "or face"])
+        thread1.start()
+        thread2.start()
+
+        try:
+            result_type, result_value = result_queue.get(timeout=5)
+            logging.info(f"first to finish: {result_type} with value: {result_value}")
+        except queue.Empty:
+            logging.info("timeout")
+            draw(["timeout"], 1)
+        finally:
+            thread1.join(timeout=1)
+            thread2.join(timeout=1)
 
 if __name__ == '__main__':
     main_menu()
