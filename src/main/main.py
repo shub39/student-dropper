@@ -51,9 +51,13 @@ def main_menu():
                 draw(["no subject", "selected"], 1)
 
         if read_keypad() == "2":
-            teacher_attendance(fingerprint_class, face_class)
+            teacher_attendance(fingerprint_class, face_class, teachers)
 
-def teacher_attendance(fingerprint_class: FingerPrintAttendance, face_class: FaceAttendance):
+def teacher_attendance(
+        fingerprint_class: FingerPrintAttendance,
+        face_class: FaceAttendance,
+        teachers
+):
     """Teacher attendance taker"""
     logging.info("Starting teacher attendance")
 
@@ -75,6 +79,22 @@ def teacher_attendance(fingerprint_class: FingerPrintAttendance, face_class: Fac
         try:
             result_type, result_value = result_queue.get(timeout=5)
             logging.info(f"first to finish: {result_type} with value: {result_value}")
+
+            if result_type == "fingerprint":
+                possible_indexes = []
+                for teacher in teachers:
+                    possible_indexes.append(teacher.index)
+
+                if result_value not in possible_indexes:
+                    draw(["invalid", "fingerprint"], 1)
+            else:
+                possible_rolls = []
+                for teacher in teachers:
+                    possible_rolls.append(teacher.roll)
+
+                if result_value not in possible_rolls:
+                    draw(["invalid", "faces"])
+
         except queue.Empty:
             logging.info("timeout")
             draw(["timeout"], 1)
