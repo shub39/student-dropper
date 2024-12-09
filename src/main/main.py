@@ -86,18 +86,12 @@ def teacher_attendance(
                 for teacher in teachers:
                     if str(result_value) == teacher.index:
                         draw(["subject", str(teacher.subject)], 1)
-
-                        thread1.join(timeout=1)
-                        thread2.join(timeout=1)
                         return teacher
                 draw(["invalid", "fingerprint"], 1)
             else:
                 for teacher in teachers:
                     if str(result_value - 100) == teacher.roll:
                         draw(["subject", str(teacher.subject)], 1)
-
-                        thread1.join(timeout=1)
-                        thread2.join(timeout=1)
                         return teacher
                 draw(["invalid", "fingerprint"], 1)
 
@@ -107,6 +101,7 @@ def teacher_attendance(
         finally:
             thread1.join(timeout=1)
             thread2.join(timeout=1)
+            logging.info("threads joined")
 
 if __name__ == '__main__':
     main_menu()
