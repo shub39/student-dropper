@@ -1,5 +1,6 @@
 import csv
 import logging
+from numbers import Number
 
 logging.basicConfig(
     level=logging.INFO,
@@ -39,7 +40,7 @@ def load_students():
             for line in reader:
                 student = Student(
                     index = str(line[0]),
-                    roll = int(line[1]),
+                    roll = str(int(line[1])),
                     name = str(line[2])
                 )
                 students.append(student)
