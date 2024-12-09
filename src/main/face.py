@@ -30,43 +30,31 @@ class FaceAttendance:
     def face_attendance(self, result_queue: queue.Queue):
         start_time = time.time()
 
-        try:
-            while time.time() - start_time < 5:
-                logging.info("starting face detection")
+        while time.time() - start_time < 5:
 
-                try:
-                    frame = self.cam.capture_array()
-                except Exception as e:
-                    logging.error(f"Camera capture error: {e}")
-                    break
+            logging.info("starting face detection")
+            frame = self.cam.capture_array()
 
-                frame_gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
+            logging.info("setting frame")
+            frame_gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
 
-                try:
-                    faces = self.face_detector.detectMultiScale(
-                        frame_gray,
-                        scaleFactor=1.1,
-                        minNeighbors=5,
-                        minSize=(30, 30)
-                    )
-                except Exception as e:
-                    logging.error(f"Face detection error: {e}")
-                    continue
+            logging.info("detecting faces")
+            faces = self.face_detector.detectMultiScale(
+                frame_gray,
+                scaleFactor=1.1,
+                minNeighbors=5,
+                minSize=(30, 30)
+            )
 
-                for (x, y, w, h) in faces:
-                    try:
-                        face_id, confidence = self.recognizer.predict(frame_gray[y:y + h, x:x + w])
+            logging.info("iterating...")
+            for (x, y, w, h) in faces:
+                logging.info("loop")
+                face_id, confidence = self.recognizer.predict(frame_gray[y:y + h, x:x + w])
 
-                        if confidence > 25:
-                            logging.info("exiting face detection")
-                            result_queue.put(("face", face_id))
-                            return face_id
-                    except Exception as e:
-                        logging.error(f"Face recognition error: {e}")
-                        continue
+                if confidence > 25:
+                    logging.info("exiting face detection")
+                    result_queue.put(("face", face_id))
+                    return face_id
 
-        except Exception as e:
-            logging.error(f"Unexpected error in face attendance: {e}")
-
-        logging.info("No face detected within 5 seconds")
+        logging.info("face detection timeout")
         return None

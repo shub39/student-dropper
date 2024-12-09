@@ -67,17 +67,15 @@ def main_menu():
                 thread1.start()
                 thread2.start()
 
-                result_type, result_value = result_queue.get()
-
-                thread1.join()
-                thread2.join()
-
-                if result_queue.empty():
+                try:
+                    result_type, result_value = result_queue.get(timeout=5)
+                    logging.info(f"first to finish: {result_type} with value: {result_value}")
+                except queue.Empty:
                     logging.info("timeout")
                     draw(["timeout"], 1)
-                    continue
-                else:
-                    logging.info(f"first to finish: {result_type} with value: {result_value}")
+                finally:
+                    thread1.join(timeout=1)
+                    thread2.join(timeout=1)
 
             else:
                 continue
