@@ -39,7 +39,7 @@ class FingerPrintAttendance:
 
 
             self.f.convertImage()
-            result = self.f.searchImage()
+            result = self.f.searchTemplate()
 
             if result[0] == -1:
                 draw(["no match", "try again"], 2)
