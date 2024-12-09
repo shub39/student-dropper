@@ -54,11 +54,14 @@ def main_menu():
             else:
                 student = student_attendance(fingerprint_class, face_class, students)
                 if student is not None:
+                    draw([student.name, student.roll], 1)
                     write_data(student, current_teacher)
 
 
         if read_keypad() == "2":
             current_teacher = teacher_attendance(fingerprint_class, face_class, teachers)
+            if current_teacher is not None:
+                draw(["subject", str(teacher.subject)], 1)
 
 def write_data(student, teacher):
     time_tuple = time.localtime()
@@ -171,13 +174,11 @@ def teacher_attendance(
             if result_type == "fingerprint":
                 for teacher in teachers:
                     if str(result_value) == teacher.index:
-                        draw(["subject", str(teacher.subject)], 1)
                         return teacher
                 draw(["invalid", "fingerprint"], 1)
             else:
                 for teacher in teachers:
                     if str(result_value - 100) == teacher.roll:
-                        draw(["subject", str(teacher.subject)], 1)
                         return teacher
                 draw(["invalid", "face"], 1)
 
