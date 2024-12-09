@@ -30,7 +30,7 @@ class FingerPrintAttendance:
 
             start_time = time.time()
 
-            while self.f.readImage() == False:
+            while not self.f.readImage():
                 if time.time() - start_time < 5:
                     pass
                 else:

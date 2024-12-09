@@ -30,23 +30,12 @@ class FaceAttendance:
     def face_attendance(self, result_queue: queue.Queue):
         start_time = time.time()
 
-        while True:
-            if time.time() - start_time >= 5:
-                logging.info("face detection timed out")
-                return None
+        while time.time() - start_time < 5:
 
             logging.info("starting face detection")
             frame = self.cam.capture_array()
 
-            if time.time() - start_time >= 5:
-                logging.info("face detection timed out")
-                return None
-
             frame_gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
-
-            if time.time() - start_time >= 5:
-                logging.info("face detection timed out")
-                return None
 
             faces = self.face_detector.detectMultiScale(
                 frame_gray,
@@ -55,14 +44,7 @@ class FaceAttendance:
                 minSize=(30, 30)
             )
 
-            if time.time() - start_time >= 5:
-                logging.info("face detection timed out")
-                return None
-
             for (x, y, w, h) in faces:
-                if time.time() - start_time >= 5:
-                    logging.info("face detection timed out")
-                    return None
 
                 face_id, confidence = self.recognizer.predict(frame_gray[y:y + h, x:x + w])
 
@@ -70,3 +52,6 @@ class FaceAttendance:
                     logging.info("exiting face detection")
                     result_queue.put(("face", face_id))
                     return face_id
+
+        logging.info("face detection timeout")
+        return None
