@@ -61,7 +61,7 @@ def main_menu():
         if read_keypad() == "2":
             current_teacher = teacher_attendance(fingerprint_class, face_class, teachers)
             if current_teacher is not None:
-                draw(["subject", str(teacher.subject)], 1)
+                draw(["subject", str(current_teacher.subject)], 1)
 
 def write_data(student, teacher):
     time_tuple = time.localtime()
