@@ -85,14 +85,14 @@ def teacher_attendance(
                 for teacher in teachers:
                     possible_indexes.append(teacher.index)
 
-                if result_value not in possible_indexes:
+                if str(result_value) not in possible_indexes:
                     draw(["invalid", "fingerprint"], 1)
             else:
                 possible_rolls = []
                 for teacher in teachers:
                     possible_rolls.append(teacher.roll)
 
-                if result_value not in possible_rolls:
+                if str(result_value + 100) not in possible_rolls:
                     draw(["invalid", "faces"])
 
         except queue.Empty:
