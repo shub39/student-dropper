@@ -52,13 +52,12 @@ def main_menu():
                 logging.info("Starting student attendance")
 
         if read_keypad() == "2":
-            teacher_attendance(fingerprint_class, face_class, teachers, current_teacher)
+            current_teacher = teacher_attendance(fingerprint_class, face_class, teachers)
 
 def teacher_attendance(
         fingerprint_class: FingerPrintAttendance,
         face_class: FaceAttendance,
-        teachers,
-        current_teacher
+        teachers
 ):
     """Teacher attendance taker"""
     logging.info("Starting teacher attendance")
@@ -86,21 +85,19 @@ def teacher_attendance(
                 for teacher in teachers:
                     if str(result_value) == teacher.index:
                         draw(["subject", str(teacher.subject)], 1)
-                        current_teacher = teacher
 
                         thread1.join(timeout=1)
                         thread2.join(timeout=1)
-                        return
+                        return teacher
                 draw(["invalid", "fingerprint"], 1)
             else:
                 for teacher in teachers:
                     if str(result_value - 100) == teacher.roll:
                         draw(["subject", str(teacher.subject)], 1)
-                        current_teacher = teacher
 
                         thread1.join(timeout=1)
                         thread2.join(timeout=1)
-                        return
+                        return teacher
                 draw(["invalid", "fingerprint"], 1)
 
         except queue.Empty:
@@ -109,6 +106,7 @@ def teacher_attendance(
         finally:
             thread1.join(timeout=1)
             thread2.join(timeout=1)
+            return None
 
 if __name__ == '__main__':
     main_menu()
