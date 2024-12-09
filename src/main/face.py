@@ -35,8 +35,10 @@ class FaceAttendance:
             logging.info("starting face detection")
             frame = self.cam.capture_array()
 
+            logging.info("setting frame")
             frame_gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
 
+            logging.info("detecting faces")
             faces = self.face_detector.detectMultiScale(
                 frame_gray,
                 scaleFactor=1.1,
@@ -44,8 +46,9 @@ class FaceAttendance:
                 minSize=(30, 30)
             )
 
+            logging.info("iterating...")
             for (x, y, w, h) in faces:
-
+                logging.info("loop")
                 face_id, confidence = self.recognizer.predict(frame_gray[y:y + h, x:x + w])
 
                 if confidence > 25:
