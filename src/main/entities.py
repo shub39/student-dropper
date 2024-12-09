@@ -39,7 +39,7 @@ def load_students():
             for line in reader:
                 student = Student(
                     index = str(line[0]),
-                    roll = str(line[1][0]),
+                    roll = str(int(line[1])),
                     name = str(line[2])
                 )
                 students.append(student)
