@@ -23,7 +23,6 @@ class FaceAttendance:
             self.recognizer.read('trainer/trainer.yml')
             self.box_color = (255, 0, 255)
             self.cam = Picamera2()
-            self.cam.start()
         except Exception as e:
             logging.info("failed to initialize face class %s", e)
 
@@ -33,6 +32,7 @@ class FaceAttendance:
         while time.time() - start_time < 5:
 
             logging.info("starting face detection")
+            self.cam.start()
             frame = self.cam.capture_array()
 
             logging.info("setting frame")
@@ -54,7 +54,9 @@ class FaceAttendance:
                 if confidence > 25:
                     logging.info("exiting face detection")
                     result_queue.put(("face", face_id))
+                    self.cam.stop()
                     return face_id
 
         logging.info("face detection timeout")
+        self.cam.stop()
         return None
