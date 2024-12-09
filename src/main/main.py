@@ -91,7 +91,7 @@ def write_data(student, teacher):
         writer = csv.writer(file2)
         writer.writerows(rows)
 
-    logging.info("written data on " + student)
+    logging.info("written data on " + student.name)
 
 def student_attendance(
         fingerprint_class: FingerPrintAttendance,
