@@ -66,7 +66,7 @@ def write_data(student, teacher):
     time_string = time.strftime("%H:%M", time_tuple)
 
     if not os.path.exists(f"data/{date}_{teacher.subject}.csv"):
-        with open(f"data/{date}_{teacher.subject.csv}", "w") as file1:
+        with open(f"data/{date}_{teacher.subject}.csv", "w") as file1:
             csvout = csv.writer(file1)
             csvout.writerow(["Roll", "Name", "Timings"])
 
@@ -110,6 +110,8 @@ def student_attendance(
 
     thread1.start()
     thread2.start()
+
+    draw(["detecting fingerprint", "or face"])
 
     try:
         result_type, result_value = result_queue.get(timeout=5)
