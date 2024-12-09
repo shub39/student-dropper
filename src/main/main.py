@@ -65,6 +65,9 @@ def write_data(student, teacher):
     date = time.strftime("%d-%m-%Y", time.localtime())
     time_string = time.strftime("%H:%M", time_tuple)
 
+    if not os.path.exists('data/'):
+        os.makedirs('data/')
+
     if not os.path.exists(f"data/{date}_{teacher.subject}.csv"):
         with open(f"data/{date}_{teacher.subject}.csv", "w") as file1:
             csvout = csv.writer(file1)
