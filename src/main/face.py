@@ -52,3 +52,6 @@ class FaceAttendance:
 
         logging.info("face detection timeout")
         return None
+
+face = FaceAttendance(queue.Queue())
+print(face.face_attendance())
