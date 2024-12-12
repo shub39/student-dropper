@@ -8,8 +8,8 @@
 >- [x] Complete Admin code
 >>- [x] Complete Student part
 >>- [x] Complete Teachers part
->- [ ] Complete Attendance code
->- [ ] Complete G-drive integration
->- [ ] Add proper error handling
+>- [x] Complete Attendance code
+>- [x] Complete G-drive integration
+>- [x] Add proper error handling
 >- [ ] Design Box
 >- [ ] Add proper README
