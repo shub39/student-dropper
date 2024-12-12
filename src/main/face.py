@@ -52,6 +52,3 @@ class FaceAttendance:
 
         logging.info("face detection timeout")
         return None
-
-face = FaceAttendance()
-print(face.face_attendance(queue.Queue()))
