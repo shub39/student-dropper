@@ -25,7 +25,7 @@ class FaceAttendance:
             self.cam = Picamera2()
             self.cam.start()
         except Exception as e:
-            logging.info("failed to initialize face class %s", e)
+            logging.error("failed to initialize face class %s", e)
 
     def face_attendance(self, result_queue: queue.Queue):
         start_time = time.time()

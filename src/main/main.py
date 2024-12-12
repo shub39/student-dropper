@@ -1,6 +1,7 @@
 import csv
 import logging
 import os.path
+import subprocess
 import threading
 import queue
 import sys
@@ -94,6 +95,7 @@ def write_data(student, teacher):
         writer.writerows(rows)
 
     logging.info("written data on " + student.name)
+    subprocess.run(["rclone","copy","/home/raspberry/student-dropper/data/","n:/attendance-data/"])
 
 def student_attendance(
         fingerprint_class: FingerPrintAttendance,
